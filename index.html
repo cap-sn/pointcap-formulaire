@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questionnaire PointCap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EA; --card:#FFFFFF; --ink:#1E2B37; --muted:#5B666F; --line:#D8D2C2; --soft:#EBE6D8;
+  --info:#2F6DB5; --dec:#1E2B37; --comp:#B0437F;
+  --f:#3B5B4C; --r:#D9A12B; --s:#D9622B; --b:#B03A2E;
+  --serein:#E0A526; --retrait:#8A9BAE; --tension:#B03A2E;
+  --btn:#3B5B4C; --btnfg:#FFFFFF; --accent:#3B5B4C; --ocre:#C98A4B;
+  --head:'Montserrat','Inter',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;margin:0;padding-inline:16px;padding-block:20px 0}
+h1,h2,h3{font-family:var(--head);margin:0;text-wrap:balance;color:var(--ink)}
+.wrap{max-width:860px;margin:0 auto}
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1.5px solid var(--accent);padding-bottom:10px}
+header.top h1{font-size:24px;letter-spacing:-.01em}
+header.top small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.brand{font:600 13px var(--head);color:var(--accent);letter-spacing:.02em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+.who{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.av{flex:none;width:54px;height:54px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:20px}
+.who h2{font-size:21px}
+.who small{display:block;color:var(--muted);font-size:14px}
+.note{background:var(--soft);border-radius:10px;padding:12px 14px;color:var(--ink);font-size:14px;margin-top:14px}
+.warn{border-left:4px solid var(--ocre);background:var(--card);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px;margin-top:14px}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px 18px;margin-top:14px;font-size:13.5px}
+.legend div{display:flex;gap:8px;align-items:flex-start}
+.dot{flex:none;width:11px;height:11px;border-radius:50%;margin-top:5px}
+.sec{display:flex;gap:12px;align-items:baseline;margin-bottom:4px}
+.sec .n{font-family:var(--head);font-weight:700;color:var(--accent);font-size:14px}
+.sec h3{font-size:18px}
+.help{color:var(--muted);font-size:14px;margin:2px 0 14px;max-width:70ch}
+.q{margin-top:18px}
+.q>label,.q>.lab{display:block;font-weight:600;margin-bottom:8px}
+.q .sub{font-weight:400;color:var(--muted);font-size:13.5px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 13px;cursor:pointer;font:inherit;font-size:14px}
+.chip:hover:not(:disabled){border-color:var(--muted)}
+.chip:disabled{opacity:.4;cursor:not-allowed}
+.chip.on{background:var(--btn);color:var(--btnfg);border-color:var(--btn)}
+.chip small{color:inherit;opacity:.65;margin-left:4px}
+.scale{display:flex;gap:7px;flex-wrap:wrap;align-items:stretch}
+.scale .chip{min-width:44px;text-align:center}
+.ends{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--muted);margin-top:5px;max-width:420px}
+select,textarea,input[type=text],input[type=password],input[type=tel]{width:100%;max-width:520px;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+input.pinf{-webkit-text-security:disc;letter-spacing:.25em;max-width:200px}
+textarea{min-height:84px;max-width:none;resize:vertical}
+:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+.flux{border-left:4px solid var(--c);padding-left:16px}
+.flux .sec h3{color:var(--c)}
+.chain{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px;background:var(--bg)}
+.chain .hd{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.chain .hd b{font-family:var(--head)}
+.link{border:0;background:none;color:var(--muted);cursor:pointer;font:inherit;font-size:13px;text-decoration:underline;padding:2px}
+.empty{color:var(--muted);font-size:13.5px}
+.hop{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}
+.hop .who2{font-weight:600;margin-bottom:8px;font-size:14px}
+.sts{display:flex;gap:7px;flex-wrap:wrap}
+.st{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 11px;font:inherit;font-size:13.5px;cursor:pointer;display:flex;gap:7px;align-items:center}
+.st i{width:10px;height:10px;border-radius:50%;background:var(--k)}
+.st.on{border-color:var(--k);box-shadow:inset 0 0 0 1px var(--k);font-weight:600}
+.cause{margin-top:10px;display:grid;gap:8px}
+.cause .lab{font-size:13px;color:var(--muted)}
+.none{margin-top:14px;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.add{margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer}
+.btn.pri{background:var(--btn);color:var(--btnfg);border-color:var(--btn);font-weight:600}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.addb{background:var(--info);color:#fff;border-color:var(--info);font-weight:600}
+.faces{display:flex;gap:10px;flex-wrap:wrap}
+.face{display:flex;flex-direction:column;align-items:center;gap:6px;width:130px;padding:12px 8px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit;font-size:13.5px}
+.face.on{border-color:var(--k);box-shadow:0 0 0 2px var(--k)}
+.cond{margin-top:12px;padding:14px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.cond h4{margin:0 0 4px;font-family:var(--head);font-size:15px}
+#status{position:sticky;bottom:0;z-index:5;background:var(--card);border-top:1px solid var(--line);margin-inline:-16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+#status .in{max-width:860px;margin:0 auto;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#status .msg{font-size:13.5px;color:var(--muted);min-width:0;flex:1 1 260px}
+#status .msg b{color:var(--ink)}
+.miss{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+.card.incomplete,.chain.incomplete{border-color:var(--b);box-shadow:0 0 0 1px var(--b)}
+.flag{display:inline-block;margin-left:10px;font-family:var(--body);font-size:12px;font-weight:600;color:var(--b);border:1px solid var(--b);border-radius:99px;padding:1px 9px;vertical-align:middle}
+.stepbox{margin-top:12px;display:grid;gap:10px}
+.step{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 12px}
+.step .slab{font-size:12.5px;font-weight:600;color:var(--c);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.step .chip{padding:5px 11px;font-size:13.5px}
+.chip.on.stepchip{background:var(--c);border-color:var(--c);color:#fff}
+.stepacts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.famblk{border-left:4px solid var(--fc);padding-left:10px;margin-top:8px}
+.famblk .fn{font-size:13px;font-weight:600;margin-bottom:5px}
+.famblk .fn span{font-weight:400;color:var(--muted)}
+.help2{margin:10px 0 0;font-size:13.5px;color:var(--muted)}
+.dflist{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 18px;margin-top:10px;font-size:13.5px}
+.dflist div{display:flex;gap:8px;align-items:flex-start}
+.dflist i{flex:none;width:4px;align-self:stretch;border-radius:2px;background:var(--fc)}
+.sub2{margin-top:16px;font-weight:600;font-size:13.5px}
+body::after{content:"PointCap™";display:block;text-align:center;font:600 11px var(--head);color:var(--accent);padding:28px 0 90px;letter-spacing:.02em}
+/* écrans d'accueil, de préparation et de suivi */
+.row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.srow{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) auto auto;gap:8px;align-items:center;margin-top:8px}
+.srow.h{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:14px}
+.srow input[type=text]{max-width:none}
+.srow label.mg{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted);white-space:nowrap}
+.pk{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer;font:inherit;margin-top:8px}
+.pk:hover{border-color:var(--muted)}
+.pk .t{flex:1;min-width:0}.pk .t span{display:block;font-size:13px;color:var(--muted)}
+.tag{font-size:12px;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.tag.done{background:var(--f);color:#fff}.tag.wip{background:var(--r);color:#1E2B37}
+.linkbox{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.linkbox input{flex:1 1 260px;max-width:none;font-size:13px}
+.err{color:var(--b);font-size:14px;margin-top:10px;font-weight:600}
+.okmsg{color:var(--f);font-size:14px;margin-top:10px;font-weight:600}
+details.conf{margin-top:12px;font-size:14px}
+details.conf summary{cursor:pointer;font-weight:600}
+details.conf ul{margin:8px 0 0;padding-left:20px}
+table.sv{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+table.sv th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+table.sv td{padding:8px;border-bottom:1px solid var(--soft)}
+#bar{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:50;overflow:hidden;opacity:0;transition:opacity .15s}
+#bar::before{content:"";position:absolute;inset:0 auto 0 -40%;width:40%;background:var(--accent);animation:slide 1s ease-in-out infinite}
+body.busy #bar{opacity:1}
+body.busy .btn,body.busy .pk,body.busy .link{pointer-events:none;opacity:.6}
+body.busy{cursor:progress}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;margin-right:8px;animation:rot .8s linear infinite}
+@keyframes slide{to{left:100%}}@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#bar::before{animation:none;width:100%;left:0;opacity:.5}.spin{animation:none}}
+@media (max-width:700px){.srow{grid-template-columns:1fr 1fr}.srow.h{display:none}}
+@media (prefers-reduced-motion:no-preference){.chip,.st,.face{transition:border-color .15s,background .15s}}
+</style>
+</head>
+<body>
+<div id="bar" aria-hidden="true"></div>
+<div class="wrap">
+<header class="top">
+  <div>
+    <div class="brand">PointCap™</div>
+    <h1>Questionnaire de fonctionnement</h1>
+    <small id="who"></small>
+  </div>
+</header>
+<main id="app"></main>
+</div>
+<div id="status" hidden><div class="in"><div class="msg" id="msg"></div><div id="act"></div></div></div>
+
+<script>
+const API_URL='https://script.google.com/macros/s/AKfycbwbj4KhHVqk1aWa5w3PfPldtvCh_2Rwv3S0TPQR0bejKw6fN0oymZm-myFc4YdjZr_q/exec';
+const _q=new URLSearchParams(location.search);
+const _c=(k,n)=>(_q.get(k)||'').replace(/[^A-Za-z0-9\-]/g,'').slice(0,n);
+const BOOT={m:_c('m',6).toLowerCase(),c:_c('c',12).toUpperCase(),k:_c('k',40),url:location.origin+location.pathname,consultant:'PointCap™',contact:''};
+
+/* =============================================================== utilitaires */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const get=(o,path)=>path.split('.').reduce((a,k)=>a==null?a:a[k],o);
+function setPath(o,path,v){const ks=path.split('.');let a=o;for(let i=0;i<ks.length-1;i++)a=a[ks[i]];a[ks[ks.length-1]]=v;}
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const ERR={
+ code_inconnu:'Ce code n’existe pas. Vérifie-le auprès de ton dirigeant.',
+ cle_invalide:'Ce lien dirigeant n’est pas valide.',
+ pas_ouvert:'Le questionnaire n’est pas encore ouvert pour cette entreprise.',
+ nom_invalide:'Indique le nom de l’entreprise (2 caractères au moins).',
+ email_invalide:'Cette adresse e-mail ne semble pas valide.',
+ poste_vide:'Un poste n’a pas d’intitulé.',
+ poste_doublon:'Deux postes ont le même intitulé : distingue-les (par exemple « Commercial Paris » et « Commercial Lyon »).',
+ postes_invalides:'La liste des postes est vide ou trop longue.',
+ postes_insuffisants:'Ajoute au moins un poste en plus du dirigeant.',
+ deja_lance:'Le questionnaire est déjà ouvert : la liste ne peut plus être modifiée.',
+ pin_invalide:'Le code personnel doit comporter 4 à 6 chiffres.',
+ prenom_requis:'Indique ton prénom.',
+ existe:'Ce poste a déjà été commencé. Utilise ton code personnel pour le reprendre.',
+ reinit:'Ton code a été réinitialisé : reviens à la liste et choisis ton poste pour en créer un nouveau.',
+ pin_faux:'Code personnel incorrect.',
+ bloque:'Trop d’essais. Contacte la personne qui conduit le diagnostic.',
+ session_invalide:'Ta session a expiré. Rouvre tes réponses avec ton code personnel.',
+ clos:'Le questionnaire est clos.',
+ trop_long:'Tes réponses sont trop longues pour être enregistrées. Raccourcis les textes libres.',
+ reseau:'Connexion impossible. Réessaie dans un instant.',
+ hors_ligne:'Cette page doit être ouverte depuis le lien qui t’a été envoyé.',
+ erreur_serveur:'Une erreur est survenue. Réessaie dans un instant.'
+};
+const errText=e=>ERR[e]||ERR.erreur_serveur;
+let BUSY=0;
+function busy(d){BUSY+=d;document.body.classList.toggle('busy',BUSY>0);}
+function call(action,p){busy(1);return callRaw(action,p).finally(()=>busy(-1));}
+function callRaw(action,p){return new Promise((res,rej)=>{
+  if(!(window.google&&google.script&&google.script.run)){
+    // page hébergée hors d'Apps Script : appel de l'API par fetch (sans cookies, donc sans souci de comptes Google multiples)
+    if(typeof API_URL==='undefined'){rej('hors_ligne');return;}
+    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,p}),credentials:'omit',redirect:'follow'})
+      .then(r=>r.text()).then(t=>{let r;try{r=JSON.parse(t);}catch(e){rej('erreur_serveur');return;}r.ok?res(r.d):rej(r.e);}).catch(()=>rej('reseau'));
+    return;}
+  google.script.run
+    .withSuccessHandler(s=>{let r;try{r=JSON.parse(s);}catch(e){rej('erreur_serveur');return;}r.ok?res(r.d):rej(r.e);})
+    .withFailureHandler(()=>rej('reseau'))
+    .api(JSON.stringify({action,p}));
+});}
+
+/* =============================================================== données du questionnaire */
+const FL={
+ i:{t:'Information', c:'var(--info)', n:1, title:'Comment circule l’information',
+    q:'Quelles sont les informations importantes qui font tourner ton périmètre, que tu les reçoives ou que tu les transmettes pour que le travail avance ?',
+    h:'Décris jusqu’à 4 sujets, les plus structurants. Pour chacun, indique par quels postes il passe habituellement.'},
+ d:{t:'Décision', c:'var(--dec)', n:2, title:'Comment se prennent les décisions',
+    q:'Quelles sont les décisions importantes qui font avancer ton périmètre et que tu ne prends pas seul(e) : à valider, à arbitrer ou à faire trancher ?',
+    h:'Décris jusqu’à 4 sujets, les plus structurants. Pour chacun, indique qui pose la question, qui la relaie et qui tranche.'},
+ c:{t:'Compétences', c:'var(--comp)', n:3, title:'Comment circulent les compétences',
+    q:'Quels savoir-faire doivent circuler pour que ton périmètre tienne : explications, aides, formations, expertise demandée ?',
+    h:'Décris jusqu’à 4 sujets, les plus structurants. Pour chacun, indique de qui vers qui le savoir-faire circule.'}
+};
+const STATES={f:{t:'Fluide',d:'ça circule sans difficulté',k:'var(--f)'},r:{t:'Avec retard',d:'ça passe, mais avec du retard ou des détours',k:'var(--r)'},
+              s:{t:'Trop de demandes',d:'ça passe, mais les demandes s’accumulent',k:'var(--s)'},b:{t:'N’avance pas',d:'ça n’avance pas, ou reste sans réponse',k:'var(--b)'}};
+const FAM={
+ 'Cadre et règles':['personne ne sait vraiment qui décide','rien n’indique ce que chacun peut décider seul','trop de personnes à passer avant d’avoir une réponse (chaîne de décision trop longue)','aucun moment prévu pour partager l’information','la façon de faire n’est pas définie','les outils ne conviennent pas','les rôles se chevauchent'],
+ Humain:['peur de se tromper','peur de déranger','besoin d’être rassuré avant d’avancer','le dirigeant ou le manager reprend la main sur ce qui a été délégué','sentiment de ne pas être écouté','manque de reconnaissance','désaccord qui n’est pas exprimé'],
+ 'Savoir et compétence':['une seule personne détient le savoir','le savoir n’est écrit nulle part','compétence insuffisante sur le sujet','sujet trop complexe'],
+ 'Temps et disponibilité':['trop de demandes en même temps','personne n’est disponible au bon moment','plusieurs priorités se concurrencent','délais trop courts']
+};
+const FAMDEF={'Cadre et règles':'ce n’est pas clair ou pas défini (qui décide, comment, avec quels outils). Ex. : on ne sait pas jusqu’où on peut décider seul.',
+ Humain:'la peur, la confiance, l’écoute, la reconnaissance entre les personnes. Ex. : on n’ose pas déranger.',
+ 'Savoir et compétence':'la maîtrise d’un sujet, d’un outil ou d’un savoir-faire. Ex. : seule une personne sait faire.',
+ 'Temps et disponibilité':'le manque de temps ou le trop-plein de demandes. Ex. : personne n’est libre au bon moment.'};
+const FAMCOL={'Cadre et règles':'#8da0b8',Humain:'#8a63c9','Savoir et compétence':'#4a90c2','Temps et disponibilité':'#d9a441'};
+const WHY=['pas de règle ou de seuil défini','peur de se tromper','besoin d’être rassuré','décision à fort enjeu','habitude prise','parce que ça fait partie du process','le dirigeant l’avait demandé','manque d’information','sujet hors de mon périmètre','urgence client'];
+const FREINS=['Peur de déranger','Peur de l’erreur','Sentiment de ne pas être écouté','Manque de reconnaissance','Lassitude','Aucun frein particulier'];
+const FREQ=[{v:'j',l:'Chaque jour'},{v:'s',l:'Chaque semaine'},{v:'m',l:'Chaque mois'},{v:'p',l:'Plus rarement'}];
+const CLIM={s:{t:'Serein',d:'à l’aise, énergie disponible',k:'var(--serein)'},r:{t:'Neutre',d:'ni particulièrement à l’aise, ni sous pression',k:'var(--retrait)'},t:{t:'Sous tension',d:'je porte une pression forte',k:'var(--tension)'}};
+const SECS=['i','d','c','up','clim','open'];
+let THEMES=[];
+
+const newChain=()=>({label:'',freq:'',steps:[[],[]],hops:[{s:'',causes:[]}]});
+const blank=()=>({
+ v:3,
+ chains:{i:[newChain()],d:[newChain()],c:[newChain()]}, none:{i:false,d:false,c:false},
+ up:{role:'',a:{label:'',to:'',alone:'',why:[],decider:''},b:{from:'',alone:'',why:[],action:''}},
+ mgr:{tranche:'',transmet:''}, dir:{perWeek:'',should:[],now:[]},
+ absence:0, absentWho:'', climat:'', oser:0, frein:'', open:{p:'',e:'',a:''}
+});
+function normalize(d){const b=blank();
+  return {...b,...d,none:{...b.none,...d.none},up:{...b.up,...d.up,a:{...b.up.a,...(d.up||{}).a},b:{...b.up.b,...(d.up||{}).b}},
+    mgr:{...b.mgr,...d.mgr},dir:{...b.dir,...d.dir},open:{...b.open,...d.open},chains:{...b.chains,...d.chains}};}
+
+/* =============================================================== état */
+let V='boot', CO=null, PEOPLE=[], BY={}, ME=null, A=null, SETUP=null, KEY='', MSG='', OK='';
+let confirmLaunch=false, pickId=null;
+const label=p=>p.poste+(p.prenom?' · '+p.prenom:'');
+function setCompany(c){CO=c;PEOPLE=c.postes.map(x=>({...x,r:x.poste,n:x.prenom||x.poste,full:x.poste}));BY=Object.fromEntries(PEOPLE.map(p=>[p.id,p]));THEMES=c.themes||[];}
+const P=()=>A;
+const names=arr=>arr.map(id=>BY[id].r).join(' + ');
+
+/* =============================================================== complétude */
+const chainTouched=ch=>ch.steps.some(s=>s.length)||!!ch.label;
+function chainValid(ch,me){return ch.steps.length>=2&&ch.steps.every(s=>s.length)&&ch.steps.some(s=>s.includes(me))&&ch.hops.length===ch.steps.length-1&&ch.hops.every(h=>h.s&&(h.s==='f'||h.causes.length));}
+function missingBy(id){
+  const a=P(), p=BY[id], m={i:[],d:[],c:[],up:[],clim:[],open:[]};
+  for(const f of ['i','d','c']){
+    if(a.none[f])continue;
+    const used=a.chains[f].filter(chainTouched);
+    if(!used.length)m[f].push(`${FL[f].t} : décris au moins un sujet (ou coche « aucun sujet »)`);
+    else if(used.some(c=>!chainValid(c,id)))m[f].push(`${FL[f].t} : un sujet est incomplet (postes à chaque étape, ton poste, état et cause de chaque passage)`);
+  }
+  const u=a.up;
+  if(!u.role)m.up.push('Remontées : indique si un sujet est monté ou t’a été remonté');
+  if(u.role==='montee'||u.role==='both'){if(!u.a.to||!u.a.alone||!u.a.why.length||!u.a.decider)m.up.push('Remontées : complète le sujet que tu as fait remonter');}
+  if(u.role==='recue'||u.role==='both'){if(!u.b.from||!u.b.alone||!u.b.action)m.up.push('Remontées : complète le sujet qu’on t’a remonté');}
+  if(p.mgr&&!a.mgr.transmet)m.up.push('Responsable : indique si tu transmets les informations à ton équipe');
+  if(p.mgr&&!p.dir&&!a.mgr.tranche)m.up.push('Responsable : indique ce que tu fais d’un sujet apporté par un collaborateur');
+  if(p.dir&&!a.dir.perWeek)m.up.push('Dirigeant : indique combien de sujets remontent à toi par semaine');
+  if(!a.absence)m.clim.push('Dépendance : réponds à la question sur trois semaines d’absence');
+  if(!a.climat)m.clim.push('Climat : choisis ton état');
+  if(!a.oser)m.clim.push('Climat : réponds à la question sur ce que tu oses dire');
+  if(!a.frein)m.clim.push('Climat : choisis le frein principal');
+  return m;
+}
+function secTouched(sec){
+  const a=P();
+  if(['i','d','c'].includes(sec))return a.none[sec]||a.chains[sec].some(chainTouched);
+  if(sec==='up')return !!(a.up.role||a.mgr.transmet||a.mgr.tranche||a.dir.perWeek||a.dir.should.length||a.dir.now.length);
+  if(sec==='clim')return !!(a.absence||a.climat||a.oser||a.frein||a.absentWho);
+  return !!(a.open.p||a.open.e||a.open.a);
+}
+const flagSec=(mb,sec)=>mb[sec].length>0&&SECS.slice(SECS.indexOf(sec)+1).some(s=>secTouched(s));
+const missing=id=>{const m=missingBy(id);return [].concat(m.i,m.d,m.c,m.up,m.clim);};
+function syncHops(ch){
+  const need=Math.max(ch.steps.length-1,0);
+  while(ch.hops.length<need)ch.hops.push({s:'',causes:[]});
+  ch.hops.length=need;
+}
+
+/* =============================================================== rendu du questionnaire */
+function chipSet(f,opts,val,num){return `<div class="chips">${opts.map(o=>{const v=typeof o==='object'?o.v:o,l=typeof o==='object'?o.l:o;
+  return `<button type="button" class="chip${String(val)===String(v)?' on':''}" data-act="set" data-f="${f}" data-v="${esc(v)}"${num?' data-num="1"':''}>${esc(l)}</button>`}).join('')}</div>`;}
+function chipMulti(f,opts,vals){return `<div class="chips">${opts.map(o=>`<button type="button" class="chip${vals.includes(o)?' on':''}" data-act="tog" data-f="${f}" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;}
+function posteSelect(f,val,me,extra){return `<select data-f="${f}" aria-label="Poste"><option value="">Choisir un poste…</option>${PEOPLE.filter(p=>p.id!==me).map(p=>`<option value="${p.id}"${val===p.id?' selected':''}>${esc(label(p))}</option>`).join('')}${extra||''}</select>`;}
+function scale(f,val,lo,hi){return `<div class="scale">${[1,2,3,4,5].map(n=>`<button type="button" class="chip${val===n?' on':''}" data-act="set" data-f="${f}" data-v="${n}" data-num="1">${n}</button>`).join('')}</div><div class="ends"><span>1 · ${esc(lo)}</span><span>5 · ${esc(hi)}</span></div>`;}
+const face=(k,sz=44)=>{const m={s:'M13 27 Q22 36 31 27',r:'M14 29 L30 29',t:'M13 31 Q22 23 31 31'}[k];
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="${CLIM[k].k}" stroke-width="4"/><circle cx="15.5" cy="18" r="2" fill="currentColor"/><circle cx="28.5" cy="18" r="2" fill="currentColor"/><path d="${m}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>`;};
+
+function hopRow(fl,ci,k,ch){
+  const h=ch.hops[k], Aa=ch.steps[k], B=ch.steps[k+1];
+  if(!Aa.length||!B.length)return '';
+  let html=`<div class="hop"><div class="who2">${esc(names(Aa))} <span style="color:${FL[fl].c}">→</span> ${esc(names(B))}</div>
+  <div class="sts" role="group" aria-label="État du passage">${Object.entries(STATES).map(([v,s])=>`<button type="button" class="st${h.s===v?' on':''}" style="--k:${s.k}" data-act="hop" data-fl="${fl}" data-ci="${ci}" data-k="${k}" data-v="${v}"><i></i>${s.t}</button>`).join('')}</div>`;
+  if(h.s&&h.s!=='f'){
+    const full=h.causes.length>=2;
+    html+=`<div class="cause"><div class="lab">Qu’est-ce qui explique ce passage : « ${esc(STATES[h.s].t.toLowerCase())} » ? Choisis jusqu’à 2 raisons.</div>
+    ${Object.entries(FAM).map(([f,list])=>`<div class="famblk" style="--fc:${FAMCOL[f]}"><div class="fn">${f} <span>· ${FAMDEF[f]}</span></div><div class="chips">${list.map(p=>{const key=f+'|'+p,on=h.causes.includes(key);
+      return `<button type="button" class="chip${on?' on':''}" data-act="cz" data-fl="${fl}" data-ci="${ci}" data-k="${k}" data-v="${esc(key)}"${(!on&&full)?' disabled':''}>${esc(p)}</button>`}).join('')}</div></div>`).join('')}
+    <div class="famblk" style="--fc:var(--muted)"><div class="chips"><button type="button" class="chip${h.causes.includes('ns|je ne sais pas')?' on':''}" data-act="cz" data-fl="${fl}" data-ci="${ci}" data-k="${k}" data-v="ns|je ne sais pas"${(!h.causes.includes('ns|je ne sais pas')&&full)?' disabled':''}>Je ne sais pas</button></div></div></div>`;
+  }
+  return html+'</div>';
+}
+function stepBlock(fl,ci,me,ch,k){
+  const n=ch.steps.length, F=FL[fl];
+  const lab=k===0?'Au départ':(k===n-1?'À l’arrivée':`Étape intermédiaire ${k}`);
+  const nb=[...(ch.steps[k-1]||[]),...(ch.steps[k+1]||[])];
+  return `<div class="step" style="--c:${F.c}"><div class="slab">${lab} <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">· un ou plusieurs postes</span></div><div class="chips">${PEOPLE.map(p=>{const on=ch.steps[k].includes(p.id);
+    return `<button type="button" class="chip stepchip${on?' on':''}" data-act="stp" data-fl="${fl}" data-ci="${ci}" data-k="${k}" data-v="${p.id}"${(!on&&nb.includes(p.id))?' disabled':''}>${esc(p.r)}${p.prenom?`<small>${esc(p.prenom)}${p.id===me?' · moi':''}</small>`:(p.id===me?'<small>moi</small>':'')}</button>`}).join('')}</div></div>`;
+}
+function chainBlock(fl,ci,me,flag){
+  const ch=P().chains[fl][ci], F=FL[fl], multi=P().chains[fl].length>1;
+  const n=ch.steps.length;
+  const bad=chainTouched(ch)&&!chainValid(ch,me)&&flag;
+  return `<div class="chain${bad?' incomplete':''}" style="--c:${F.c}"><div class="hd"><b>Sujet ${ci+1}${bad?'<span class="flag">À compléter</span>':''}</b>${multi?`<button class="link" data-act="delchain" data-fl="${fl}" data-ci="${ci}">Retirer ce sujet</button>`:''}</div>
+   <div class="q" style="margin-top:0"><label for="lb-${fl}${ci}">De quoi s’agit-il ? <span class="sub">(quelques mots, facultatif)</span></label><input type="text" id="lb-${fl}${ci}" data-f="chains.${fl}.${ci}.label" value="${esc(ch.label)}" maxlength="90"></div>
+   <div class="q" style="margin-top:14px"><div class="lab">À quelle fréquence ? <span class="sub">(facultatif)</span></div>${chipSet(`chains.${fl}.${ci}.freq`,FREQ,ch.freq)}</div>
+   <div class="q" style="margin-top:14px"><div class="lab">Par quels postes passe-t-il, dans l’ordre ?</div>
+   <div class="stepbox">${ch.steps.map((_,k)=>stepBlock(fl,ci,me,ch,k)).join('')}</div>
+   <div class="stepacts" style="margin-top:10px">${n<5?`<button type="button" class="btn" data-act="addstep" data-fl="${fl}" data-ci="${ci}">+ Ajouter une étape</button>`:''}${n>2?`<button type="button" class="link" data-act="delstep" data-fl="${fl}" data-ci="${ci}">Retirer la dernière étape</button>`:''}</div></div>
+   ${ch.steps.every(s=>s.length)&&!ch.steps.some(s=>s.includes(me))?`<p class="empty" style="color:var(--b)">Tu dois figurer dans l’une des étapes.</p>`:''}
+   ${ch.hops.map((_,k)=>hopRow(fl,ci,k,ch)).join('')}</div>`;
+}
+function fluxSection(fl,me,mb){
+  const F=FL[fl], a=P(), flag=flagSec(mb,fl);
+  return `<section class="card flux${flag?' incomplete':''}" style="--c:${F.c}"><div class="sec"><span class="n">${F.n}</span><h3>${F.title}${flag?'<span class="flag">À compléter</span>':''}</h3></div>
+  <p class="help"><b>${F.q}</b><br>${F.h}</p>
+  ${a.none[fl]?'':a.chains[fl].map((_,ci)=>chainBlock(fl,ci,me,flag||a.chains[fl].slice(ci+1).some(chainTouched))).join('')}
+  ${a.none[fl]?'':(a.chains[fl].length<4?`<div class="add"><button class="btn addb" data-act="addchain" data-fl="${fl}">+ Ajouter un sujet</button></div>`:'')}
+  <label class="none"><input type="checkbox" data-act="none" data-fl="${fl}"${a.none[fl]?' checked':''}> Aucun sujet de ce type dans mon périmètre</label></section>`;
+}
+function upSection(me,mb){
+  const a=P(), p=BY[me], u=a.up, flag=flagSec(mb,'up');
+  const roleOpts=p.dir?[{v:'recue',l:'On m’a remonté un sujet de décision'},{v:'none',l:'Rien de tel ces dernières semaines'}]
+   :[{v:'montee',l:'J’ai fait remonter un sujet de décision'},{v:'recue',l:'On m’a remonté un sujet de décision'},{v:'both',l:'Les deux'},{v:'none',l:'Rien de tel ces dernières semaines'}];
+  let h=`<section class="card${flag?' incomplete':''}"><div class="sec"><span class="n">4</span><h3>Les sujets qui montent${flag?'<span class="flag">À compléter</span>':''}</h3></div>
+  <p class="help">Cette partie sert à voir quels sujets remontent et pourquoi, pour savoir ce que l’équipe pourrait trancher seule.</p>
+  <div class="q" style="margin-top:0"><div class="lab">Ces dernières semaines…</div>${chipSet('up.role',roleOpts,u.role)}</div>`;
+  if(u.role==='montee'||u.role==='both'){
+    h+=`<div class="cond"><h4>Le sujet que tu as fait remonter</h4>
+     <div class="q"><label>À qui l’as-tu fait remonter ?</label>${posteSelect('up.a.to',u.a.to,me)}</div>
+     <div class="q"><div class="lab">Aurais-tu pu le décider seul(e) ?</div>${chipSet('up.a.alone',[{v:'oui',l:'Oui, sans difficulté'},{v:'doute',l:'Oui, mais avec un doute'},{v:'non',l:'Non'}],u.a.alone)}</div>
+     <div class="q"><div class="lab">Pourquoi l’as-tu fait remonter ? <span class="sub">(plusieurs choix possibles)</span></div>${chipMulti('up.a.why',WHY,u.a.why)}</div>
+     <div class="q"><label>Qui a réellement tranché ?</label>${posteSelect('up.a.decider',u.a.decider,me,`<option value="moi"${u.a.decider==='moi'?' selected':''}>Moi, finalement</option><option value="aucun"${u.a.decider==='aucun'?' selected':''}>Personne, le sujet n’a pas été tranché</option><option value="inconnu"${u.a.decider==='inconnu'?' selected':''}>Je ne sais pas</option>`)}</div></div>`;
+  }
+  if(u.role==='recue'||u.role==='both'){
+    h+=`<div class="cond"><h4>Le sujet qu’on t’a remonté</h4>
+     <div class="q"><label>Qui te l’a remonté ?</label>${posteSelect('up.b.from',u.b.from,me)}</div>
+     <div class="q"><div class="lab">À ton avis, cette personne aurait-elle pu le décider seule ?</div>${chipSet('up.b.alone',[{v:'oui',l:'Oui'},{v:'peutetre',l:'Peut-être'},{v:'non',l:'Non'}],u.b.alone)}</div>
+     <div class="q"><div class="lab">Qu’en as-tu fait ?</div>${chipSet('up.b.action',[{v:'tranche',l:'J’ai tranché'},{v:'relaye',l:'Je l’ai relayé plus haut'},{v:'renvoie',l:'Je l’ai renvoyé vers elle'},{v:'attente',l:'C’est resté en attente'}],u.b.action)}</div></div>`;
+  }
+  if(p.mgr){
+    h+=`<div class="q"><div class="lab">Quand tu reçois une information qui concerne ton équipe, la transmets-tu ?</div>${chipSet('mgr.transmet',[{v:'sys',l:'Systématiquement'},{v:'part',l:'En partie'},{v:'rare',l:'Rarement'},{v:'jamais',l:'Jamais'}],a.mgr.transmet)}</div>`;
+    if(!p.dir)h+=`<div class="q"><div class="lab">Quand un collaborateur t’apporte un sujet de décision, que fais-tu le plus souvent ?</div>${chipSet('mgr.tranche',[{v:'tranche',l:'Je tranche'},{v:'verifie',l:'Je tranche après avoir vérifié avec mon responsable'},{v:'relaye',l:'Je le relaie au dirigeant'},{v:'depend',l:'Ça dépend du sujet'}],a.mgr.tranche)}</div>`;
+  }
+  if(p.dir){
+    h+=`<div class="cond"><h4>Côté dirigeant</h4>
+     <div class="q"><div class="lab">Combien de sujets de décision remontent à toi en une semaine ?</div>${chipSet('dir.perWeek',['0 à 2','3 à 5','6 à 10','Plus de 10'],a.dir.perWeek)}</div>
+     <div class="q"><div class="lab">Quels sujets devraient légitimement remonter à toi ? <span class="sub">(plusieurs choix)</span></div>${chipMulti('dir.should',THEMES,a.dir.should)}</div>
+     <div class="q"><div class="lab">Quels sujets remontent aujourd’hui sans que ce soit nécessaire ? <span class="sub">(plusieurs choix)</span></div>${chipMulti('dir.now',THEMES,a.dir.now)}</div></div>`;
+  }
+  return h+'</section>';
+}
+function climatSection(me,mb){
+  const a=P(), p=BY[me], flag=flagSec(mb,'clim');
+  const oserQ=p.dir?'Mon équipe me dit quand elle n’est pas d’accord avec moi.':'Je peux dire à mon responsable, ou au dirigeant, que je ne suis pas d’accord.';
+  return `<section class="card${flag?' incomplete':''}"><div class="sec"><span class="n">5</span><h3>Dépendance et ressenti${flag?'<span class="flag">À compléter</span>':''}</h3></div>
+  <p class="help">Quelques questions sur la dépendance aux personnes et sur le vécu au quotidien.</p>
+  <div class="q" style="margin-top:0"><div class="lab">Si tu t’absentais trois semaines, que se passerait-il ?</div>${scale('absence',a.absence,'rien ne change','tout s’arrête')}</div>
+  <div class="q"><label>Qui serait le plus touché par ton absence ?</label>${posteSelect('absentWho',a.absentWho,me,`<option value="aucun"${a.absentWho==='aucun'?' selected':''}>Personne en particulier</option>`)}</div>
+  <div class="q"><div class="lab">En ce moment, comment te sens-tu dans ton travail ?</div><div class="faces">${Object.entries(CLIM).map(([v,c])=>`<button type="button" class="face${a.climat===v?' on':''}" style="--k:${c.k}" data-act="set" data-f="climat" data-v="${v}">${face(v)}<b>${c.t}</b><span style="color:var(--muted);font-size:12px;text-align:center">${c.d}</span></button>`).join('')}</div></div>
+  <div class="q"><div class="lab">${oserQ}</div>${scale('oser',a.oser,'pas du tout','sans hésiter')}</div>
+  <div class="q"><div class="lab">Quel est le principal frein humain dans ton quotidien ?</div>${chipSet('frein',FREINS,a.frein)}</div></section>`;
+}
+function openSection(){
+  const a=P();
+  return `<section class="card"><div class="sec"><span class="n">6</span><h3>Dans tes propres mots</h3></div>
+  <p class="help">Facultatif, mais ces réponses font ressortir ce que les cases ne capturent pas. Réponds en quelques phrases. Elles seront citées sans ton nom ni ton poste.</p>
+  <div class="q" style="margin-top:0"><label for="o-p">Si tu pouvais changer une règle du jeu ou une décision dans l’entreprise, laquelle et pourquoi ?</label><textarea id="o-p" data-f="open.p">${esc(a.open.p)}</textarea></div>
+  <div class="q"><label for="o-e">Qu’est-ce que beaucoup pensent ici sans le dire à voix haute ?</label><textarea id="o-e" data-f="open.e">${esc(a.open.e)}</textarea></div>
+  <div class="q"><label for="o-a">Quel sujet te fait perdre le plus de temps chaque semaine, et pourquoi ?</label><textarea id="o-a" data-f="open.a">${esc(a.open.a)}</textarea></div></section>`;
+}
+function confHtml(open){
+  const who=esc(BOOT.consultant||'PointCap™'), ct=BOOT.contact?` Contact : ${esc(BOOT.contact)}.`:'';
+  return `<details class="conf"${open?' open':''}><summary>Comment sont utilisées tes réponses</summary><ul>
+   <li>Elles sont enregistrées dans un espace protégé et lues par ${who} pour établir le diagnostic de fonctionnement de ton entreprise.</li>
+   <li>Dans le rapport remis au dirigeant, ce que tu décris sur les circuits (information, décision, compétences) apparaît rattaché aux postes concernés. Ton ressenti et ta dépendance aux personnes apparaissent aussi par poste.</li>
+   <li>Tes réponses libres (partie 6) sont citées sans ton nom ni ton poste.</li>
+   <li>Dans une petite équipe, ton poste peut te faire reconnaître : réponds avec sincérité et de façon factuelle.</li>
+   <li>Ton code personnel est le seul moyen de rouvrir tes réponses.${ct}</li></ul></details>`;
+}
+function renderForm(){
+  const p=BY[ME.id], mb=missingBy(ME.id);
+  $('#app').innerHTML=`
+  <section class="card"><div class="who"><div class="av">${esc((ME.prenom||p.poste)[0]||'?').toUpperCase()}</div><div><h2>${esc(ME.prenom)} · ${esc(p.poste)}</h2><small>${esc(CO.nom)} · ${PEOPLE.length} postes dans le périmètre</small></div></div>
+   <div class="note">Réponds avec ton expérience du quotidien. Il n’y a pas de bonne ou de mauvaise réponse : ce qui compte, c’est ce que tu vis réellement. Compte environ 20 minutes. Tes réponses sont enregistrées au fur et à mesure : tu peux t’arrêter et reprendre avec ton code personnel.</div>
+   ${confHtml(false)}
+   <div class="sub2">Comment décrire un sujet</div>
+   <p class="help2">Pour chaque type de flux (information, décision, compétences), tu décris les sujets importants qui font tourner ton périmètre, pas seulement le dernier en date. Pour chaque sujet : 1) tu indiques les postes concernés à chaque étape, un ou plusieurs ; 2) tu qualifies chaque passage entre deux étapes ; 3) si le passage n’est pas fluide, tu dis ce qui l’explique, jusqu’à 2 raisons.</p>
+   <div class="sub2">Qualifier un passage</div>
+   <div class="legend" aria-label="Qualifier un passage">${Object.values(STATES).map(s=>`<div><span class="dot" style="background:${s.k}"></span><span><b>${s.t}</b> : ${s.d}</span></div>`).join('')}</div>
+   <div class="sub2">Expliquer un passage qui n’est pas fluide</div>
+   <div class="dflist">${Object.entries(FAMDEF).map(([f,d])=>`<div style="--fc:${FAMCOL[f]}"><i></i><span><b>${f}</b> : ${d}</span></div>`).join('')}</div></section>
+  ${['i','d','c'].map(f=>fluxSection(f,ME.id,mb)).join('')}${upSection(ME.id,mb)}${climatSection(ME.id,mb)}${openSection()}`;
+  renderStatus();
+}
+
+/* =============================================================== enregistrement */
+let saveT=null, saving=false, dirty=false, saveState='ok', lastSave=null;
+function queueSave(){dirty=true;saveState='saving';renderStatus();clearTimeout(saveT);saveT=setTimeout(()=>flush(false),2500);}
+async function flush(done){
+  if(saving)return;
+  if(!dirty&&!done)return;
+  saving=true;dirty=false;
+  try{
+    await call('save',{code:CO.code,id:ME.id,token:ME.token,data:A,done:!!done});
+    saveState='ok';lastSave=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    saveState=(e==='session_invalide')?'expire':'err';dirty=true;MSG=errText(e);
+    if(e==='session_invalide'){store.del(`pc:${CO.code}:${ME.id}`);}
+  }
+  saving=false;
+  if(dirty&&saveState==='err')saveT=setTimeout(()=>flush(false),6000);
+  renderStatus();
+  return saveState==='ok';
+}
+async function settle(){while(saving)await new Promise(r=>setTimeout(r,150));}
+function renderStatus(){
+  const st=$('#status');
+  if(V!=='form'){st.hidden=true;return;}
+  st.hidden=false;
+  const m=missing(ME.id);
+  const txt={ok:`Enregistré${lastSave?' à '+lastSave:''}`,saving:'Enregistrement…',err:'Échec de l’enregistrement, nouvel essai automatique',expire:'Session expirée'}[saveState];
+  $('#msg').innerHTML=`<b>${esc(ME.prenom)}</b> · ${m.length?`${m.length} point${m.length>1?'s':''} à compléter`:'prêt à être terminé'} · ${txt}`
+   +(m.length?`<ul class="miss">${m.slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}${m.length>4?`<li>et ${m.length-4} autre${m.length>5?'s':''}…</li>`:''}</ul>`:'');
+  $('#act').innerHTML=saveState==='expire'
+    ?`<button class="btn pri" data-act="relogin">Rouvrir avec mon code</button>`
+    :`<button class="btn pri" data-act="finish"${m.length?' disabled':''}>Terminer mon questionnaire</button>`;
+}
+
+/* =============================================================== écrans */
+function setView(v){V=v;MSG='';OK='';render();window.scrollTo({top:0});}
+function head(){ $('#who').textContent=CO?CO.nom:''; }
+function errBox(){return MSG?`<div class="err" role="alert">${esc(MSG)}</div>`:(OK?`<div class="okmsg">${esc(OK)}</div>`:'');}
+
+function viewHome(){
+  return `<section class="card"><h2>Bienvenue</h2>
+   <p class="help" style="margin-top:8px">Ce questionnaire sert à comprendre comment circulent l’information, les décisions et les savoir-faire dans ton entreprise. Il prend environ 20 minutes. Il t’a été envoyé par la personne qui conduit le diagnostic.</p>
+   <div class="q"><label for="code">Code de ton entreprise</label><input type="text" id="code" autocomplete="off" autocapitalize="characters" placeholder="Exemple : AB3K-7MQ2" value="${esc(BOOT.c||'')}"></div>
+   <div class="row2"><button class="btn pri" data-act="enter">Continuer</button></div>${errBox()}
+   <p class="help2">Tu n’as pas de code ? Demande-le à ton dirigeant.</p></section>`;
+}
+function viewDirHome(){
+  return `<section class="card"><h2>Espace dirigeant</h2>
+   <p class="help" style="margin-top:8px">Crée l’espace de ton entreprise : tu listes les postes concernés, puis tu envoies un lien à ton équipe.</p>
+   <div class="q"><label for="nom">Nom de l’entreprise</label><input type="text" id="nom" maxlength="80" autocomplete="organization"></div>
+   <div class="q"><label for="dem">Ton e-mail <span class="sub">(facultatif : tu y reçois tes liens, pour ne pas les perdre)</span></label><input type="text" id="dem" maxlength="120" autocomplete="email" inputmode="email"></div>
+   <div class="row2"><button class="btn pri" data-act="dcreate">Créer l’espace</button></div>${errBox()}</section>
+  ${(()=>{let r=null;try{r=JSON.parse(store.get('pc:dir')||'null')}catch(e){}return r&&r.k?`<section class="card"><h3 style="font-size:16px">Reprendre mon espace</h3><div class="row2"><button class="btn" data-act="dresume">${esc(r.n||'Mon espace')}</button></div></section>`:''})()}
+  <section class="card"><h3 style="font-size:16px">J’ai déjà un espace</h3>
+   <p class="help" style="margin-top:6px">Utilise ton lien dirigeant, ou saisis ta clé.</p>
+   <div class="q" style="margin-top:8px"><label for="dk">Clé dirigeant <span class="sub">(la fin de ton lien dirigeant, après « k= »)</span></label><input type="text" id="dk" autocapitalize="characters" value="${esc(BOOT.k||'')}"></div>
+   <div class="row2"><button class="btn" data-act="dopen">Ouvrir mon espace</button></div></section>`;
+}
+function viewSetup(){
+  const s=SETUP;
+  return `<section class="card"><h2>Les postes de ton périmètre</h2>
+   <p class="help" style="margin-top:8px">Liste les postes dont les échanges seront cartographiés : chaque répondant les verra pour décrire ses circuits. Le prénom est facultatif : s’il est vide, chaque collaborateur le saisira lui-même. Les intitulés doivent être distincts.</p>
+   <div class="q" style="margin-top:8px"><label for="snom">Nom de l’entreprise</label><input type="text" id="snom" data-sk="nom" value="${esc(s.nom)}" maxlength="80"></div>
+   <div class="srow h"><div>Poste</div><div>Prénom (facultatif)</div><div>Pôle (facultatif)</div><div>Manager</div><div></div></div>
+   ${s.postes.map((x,i)=>`<div class="srow"><input type="text" data-sk="poste" data-i="${i}" value="${esc(x.poste)}" maxlength="60" placeholder="${i===0?'Dirigeant':'Intitulé du poste'}" aria-label="Poste ${i+1}">
+     <input type="text" data-sk="prenom" data-i="${i}" value="${esc(x.prenom)}" maxlength="40" placeholder="Prénom" aria-label="Prénom ${i+1}">
+     <input type="text" data-sk="pole" data-i="${i}" value="${esc(x.pole)}" maxlength="40" placeholder="Pôle" aria-label="Pôle ${i+1}">
+     ${i===0?'<span class="tag">Dirigeant</span>':`<label class="mg"><input type="checkbox" data-sk="mgr" data-i="${i}"${x.mgr?' checked':''}> manager</label>`}
+     ${i===0?'<span></span>':`<button class="link" data-act="sdel" data-i="${i}" aria-label="Retirer le poste ${i+1}">Retirer</button>`}</div>`).join('')}
+   <div class="row2"><button class="btn addb" data-act="sadd">+ Ajouter un poste</button><span class="help2" style="margin:0">${s.postes.length} poste${s.postes.length>1?'s':''}</span></div>
+   <div class="q"><label for="sth">Sujets types de décision <span class="sub">(un par ligne, proposés au dirigeant dans la partie 4)</span></label><textarea id="sth" data-sk="themes" style="min-height:120px">${esc(s.themes)}</textarea></div>
+   ${errBox()}
+   ${confirmLaunch?`<div class="warn"><b>Ouvrir le questionnaire à l’équipe ?</b> Une fois ouvert, la liste des postes ne peut plus être modifiée.
+      <div class="row2"><button class="btn pri" data-act="slaunch">Oui, ouvrir</button><button class="btn" data-act="scancel">Revenir à la liste</button></div></div>`
+    :`<div class="row2"><button class="btn" data-act="ssave">Enregistrer</button><button class="btn pri" data-act="sconfirm">Enregistrer et ouvrir à l’équipe</button></div>`}
+  </section>`;
+}
+const STT={libre:['','À faire'],'en cours':['wip','En cours'],termine:['done','Terminé']};
+function viewDash(){
+  const d=CO, teamLink=`${BOOT.url}?c=${d.code}`, dirLink=`${BOOT.url}?m=dir&k=${KEY}`;
+  const nT=d.postes.filter(x=>x.statut==='termine').length;
+  return `<section class="card"><h2>Suivi des réponses</h2>
+   <p class="help" style="margin-top:8px"><b>${nT} / ${d.postes.length}</b> questionnaires terminés. Tu vois qui a terminé, jamais le contenu des réponses.</p>
+   <table class="sv"><thead><tr><th>Poste</th><th>Prénom</th><th>Statut</th></tr></thead><tbody>
+   ${d.postes.map(x=>`<tr><td>${esc(x.poste)}</td><td>${esc(x.prenom||'—')}</td><td><span class="tag ${STT[x.statut][0]}">${STT[x.statut][1]}</span></td></tr>`).join('')}</tbody></table>
+   ${d.demandes&&d.demandes.length?`<div class="warn"><b>Collaborateurs absents de la liste</b><ul style="margin:6px 0 0;padding-left:18px">${d.demandes.map(x=>`<li>${esc(x.nom)} — ${esc(x.poste)}</li>`).join('')}</ul>Contacte la personne qui conduit le diagnostic pour les ajouter.</div>`:''}
+   <div class="row2"><button class="btn" data-act="drefresh">Actualiser</button><button class="btn pri" data-act="dme">Répondre moi-même</button></div>${errBox()}</section>
+  <section class="card"><h3 style="font-size:16px">À envoyer à ton équipe</h3>
+   <p class="help" style="margin-top:6px">Ce lien ouvre le questionnaire. Le code de l’entreprise est <b>${esc(d.code)}</b>.</p>
+   <div class="linkbox"><input type="text" readonly id="lk1" value="${esc(teamLink)}" onfocus="this.select()"><button class="btn" data-act="copy" data-t="lk1">Copier</button></div></section>
+  <section class="card"><h3 style="font-size:16px">Ton lien de suivi, à conserver</h3>
+   <p class="help" style="margin-top:6px">Il te ramène ici. Ne le partage pas : il donne accès au suivi.</p>
+   <div class="linkbox"><input type="text" readonly id="lk2" value="${esc(dirLink)}" onfocus="this.select()"><button class="btn" data-act="copy" data-t="lk2">Copier</button></div></section>`;
+}
+function viewPick(){
+  return `<section class="card"><h2>Qui es-tu ?</h2>
+   <p class="help" style="margin-top:8px">Choisis ton poste dans la liste de <b>${esc(CO.nom)}</b>.</p>
+   ${CO.postes.map(x=>`<button class="pk" data-act="pick" data-id="${x.id}"><span class="t"><b>${esc(x.poste)}</b>${x.prenom?`<span>${esc(x.prenom)}</span>`:''}</span><span class="tag ${STT[x.statut][0]}">${STT[x.statut][1]}</span></button>`).join('')}
+   ${errBox()}
+   <div class="row2"><button class="link" data-act="mshow">Je ne me trouve pas dans la liste</button></div>
+   ${V==='pick'&&pickId==='__missing'?`<div class="cond"><div class="q" style="margin-top:0"><label for="mn">Ton prénom</label><input type="text" id="mn" maxlength="60"></div><div class="q"><label for="mp">Ton poste</label><input type="text" id="mp" maxlength="60"></div><div class="row2"><button class="btn pri" data-act="msend">Prévenir mon dirigeant</button></div></div>`:''}</section>`;
+}
+function viewCreate(){
+  const x=BY[pickId];
+  return `<section class="card"><h2>${esc(x.poste)}</h2>
+   <p class="help" style="margin-top:8px">${x.reset?'Ton code personnel a été réinitialisé. Crée-en un nouveau : tes réponses déjà saisies sont conservées.':'Avant de commencer, crée ton code personnel. Il te permettra de rouvrir tes réponses, et personne d’autre ne pourra les consulter.'}</p>
+   <div class="q"><label for="pn">Ton prénom</label><input type="text" id="pn" maxlength="40" value="${esc(x.prenom||'')}"></div>
+   <div class="q"><label for="pin1">Code personnel <span class="sub">(4 à 6 chiffres)</span></label><input type="text" class="pinf" inputmode="numeric" pattern="[0-9]*" id="pin1" maxlength="6" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-form-type="other"></div>
+   <div class="q"><label for="pin2">Confirme ton code</label><input type="text" class="pinf" inputmode="numeric" pattern="[0-9]*" id="pin2" maxlength="6" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-form-type="other"></div>
+   ${confHtml(true)}
+   <label class="none" style="color:var(--ink)"><input type="checkbox" id="okc"> J’ai lu comment mes réponses sont utilisées.</label>
+   ${errBox()}
+   <div class="row2"><button class="btn pri" data-act="begin">Commencer</button><button class="btn" data-act="back">Retour</button></div></section>`;
+}
+function viewPin(){
+  const x=BY[pickId];
+  return `<section class="card"><h2>${esc(x.poste)}</h2>
+   <p class="help" style="margin-top:8px">Ce poste a déjà été commencé. Saisis ton code personnel pour reprendre.</p>
+   <div class="q"><label for="pin">Code personnel</label><input type="text" class="pinf" inputmode="numeric" pattern="[0-9]*" id="pin" maxlength="6" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-form-type="other"></div>
+   ${errBox()}<div class="row2"><button class="btn pri" data-act="resume">Reprendre</button><button class="btn" data-act="back">Retour</button></div>
+   <p class="help2">Code oublié ? Contacte la personne qui conduit le diagnostic : elle réinitialisera ton code, et tes réponses déjà saisies seront conservées.</p></section>`;
+}
+function viewThanks(){
+  return `<section class="card"><h2>Merci ${esc(ME.prenom)}</h2>
+   <p class="help" style="margin-top:8px">Ton questionnaire est enregistré. La personne qui conduit le diagnostic reviendra vers ton dirigeant avec une cartographie de l’ensemble des réponses.</p>
+   <div class="row2"><button class="btn" data-act="reopen">Modifier mes réponses</button></div></section>`;
+}
+function render(){
+  head();
+  const app=$('#app');
+  if(V==='form'){renderForm();return;}
+  $('#status').hidden=true;
+  app.innerHTML={boot:()=>'<section class="card"><p class="help"><span class="spin"></span>Chargement…</p></section>',home:viewHome,dirhome:viewDirHome,setup:viewSetup,dash:viewDash,pick:viewPick,create:viewCreate,pin:viewPin,thanks:viewThanks}[V]();
+}
+
+/* =============================================================== actions */
+const val=id=>{const e=document.getElementById(id);return e?e.value:'';};
+async function loadCompany(code){
+  const c=await call('getCompany',{code});setCompany(c);
+}
+async function loadAdmin(code,key){
+  const c=await call('adminStatus',{code,key});KEY=key;setCompany(c);store.set('pc:dir',JSON.stringify({k:key,n:c.nom}));
+  if(c.statut==='prepa'){
+    SETUP={nom:c.nom,postes:c.postes.map(x=>({poste:x.poste,prenom:x.prenom,pole:x.pole,mgr:x.mgr})),themes:(c.themes||[]).join('\n')};
+    confirmLaunch=false;V='setup';
+  }else V='dash';
+  render();
+}
+function enterForm(r){
+  ME={id:pickId,prenom:r.prenom,token:r.token};
+  A=normalize(r.data||{});
+  store.set(`pc:${CO.code}:${pickId}`,r.token);
+  if(r.statut==='termine'&&r.data){V='thanks';render();return;}
+  saveState='ok';lastSave=null;V='form';render();window.scrollTo({top:0});
+}
+async function handle(act,d,el){
+  try{
+  if(act==='enter'){const c=val('code').trim().toUpperCase();if(!c){MSG='Saisis le code de ton entreprise.';return render();}
+    await loadCompany(c);BOOT.c=c;setView('pick');return;}
+  if(act==='dcreate'){const r=await call('createCompany',{nom:val('nom'),email:val('dem')});await loadAdmin(r.code,r.key);return;}
+  if(act==='dresume'){const r=JSON.parse(store.get('pc:dir'));await loadAdmin('',r.k);return;}
+  if(act==='dopen'){await loadAdmin('',val('dk').trim().toUpperCase());return;}
+  if(act==='sadd'){if(SETUP.postes.length<60)SETUP.postes.push({poste:'',prenom:'',pole:'',mgr:false});return render();}
+  if(act==='sdel'){SETUP.postes.splice(+d.i,1);return render();}
+  if(act==='ssave'||act==='sconfirm'){
+    await call('saveSetup',{code:CO.code,key:KEY,nom:SETUP.nom,postes:SETUP.postes,themes:SETUP.themes.split('\n')});
+    if(act==='sconfirm'){confirmLaunch=true;MSG='';}else{OK='Liste enregistrée.';MSG='';}
+    return render();}
+  if(act==='scancel'){confirmLaunch=false;return render();}
+  if(act==='slaunch'){
+    await call('saveSetup',{code:CO.code,key:KEY,nom:SETUP.nom,postes:SETUP.postes,themes:SETUP.themes.split('\n')});
+    await call('launch',{code:CO.code,key:KEY});await loadAdmin(CO.code,KEY);return;}
+  if(act==='drefresh'){await loadAdmin(CO.code,KEY);OK='Suivi actualisé.';return render();}
+  if(act==='dme'){pickId='dir';const x=BY.dir;V=x&&x.statut!=='libre'?'pin':'create';MSG='';OK='';return render();}
+  if(act==='copy'){const e=document.getElementById(d.t);e.select();let ok=false;try{ok=document.execCommand('copy');}catch(x){}OK=ok?'Lien copié.':'Sélectionne le lien puis copie-le (Ctrl+C).';return render();}
+  if(act==='pick'){pickId=d.id;MSG='';const x=BY[d.id];
+    const tk=store.get(`pc:${CO.code}:${d.id}`);
+    if(x.statut!=='libre'&&tk){try{const r=await call('resumeToken',{code:CO.code,id:d.id,token:tk});enterForm(r);return;}catch(e){store.del(`pc:${CO.code}:${d.id}`);}}
+    V=(x.statut==='libre'||x.reset)?'create':'pin';return render();}
+  if(act==='back'){pickId=null;MSG='';V=(BOOT.m==='dir'&&KEY)?'dash':'pick';return render();}
+  if(act==='mshow'){pickId='__missing';return render();}
+  if(act==='msend'){await call('missing',{code:CO.code,nom:val('mn'),poste:val('mp')});pickId=null;OK='Ton dirigeant a été prévenu. Reviens quand ton poste aura été ajouté.';return render();}
+  if(act==='begin'){
+    const p1=val('pin1'),p2=val('pin2');
+    if(!/^\d{4,6}$/.test(p1)){MSG=ERR.pin_invalide;return render();}
+    if(p1!==p2){MSG='Les deux codes ne sont pas identiques.';return render();}
+    if(!val('pn').trim()){MSG=ERR.prenom_requis;return render();}
+    if(!document.getElementById('okc').checked){MSG='Coche la case pour confirmer que tu as lu comment tes réponses sont utilisées.';return render();}
+    const r=await call('start',{code:CO.code,id:pickId,prenom:val('pn'),pin:p1});enterForm(r);return;}
+  if(act==='resume'||act==='relogin'){
+    if(act==='relogin'){V='pin';MSG='';return render();}
+    const r=await call('resume',{code:CO.code,id:pickId,pin:val('pin')});enterForm(r);return;}
+  if(act==='finish'){if(missing(ME.id).length)return;clearTimeout(saveT);await settle();dirty=true;const ok=await flush(true);if(ok){V='thanks';render();window.scrollTo({top:0});}return;}
+  if(act==='reopen'){V='form';saveState='ok';render();window.scrollTo({top:0});return;}
+  }catch(e){MSG=errText(e);if(typeof e==='string'&&e==='code_inconnu')MSG=ERR.code_inconnu;render();}
+}
+
+/* ---- saisie dans le questionnaire */
+function formAct(el){
+  const act=el.dataset.act,a=A,d=el.dataset;
+  if(act==='set'){setPath(a,d.f,d.num?Number(d.v):d.v);}
+  else if(act==='tog'){const arr=get(a,d.f);const i=arr.indexOf(d.v);i>=0?arr.splice(i,1):arr.push(d.v);}
+  else if(act==='stp'){const st=a.chains[d.fl][+d.ci].steps[+d.k];const i=st.indexOf(d.v);i>=0?st.splice(i,1):st.push(d.v);}
+  else if(act==='addstep'){const ch=a.chains[d.fl][+d.ci];if(ch.steps.length<5){ch.steps.push([]);syncHops(ch);}}
+  else if(act==='delstep'){const ch=a.chains[d.fl][+d.ci];if(ch.steps.length>2){ch.steps.pop();syncHops(ch);}}
+  else if(act==='hop'){const h=a.chains[d.fl][+d.ci].hops[+d.k];h.s=d.v;if(d.v==='f')h.causes=[];}
+  else if(act==='cz'){const h=a.chains[d.fl][+d.ci].hops[+d.k];const i=h.causes.indexOf(d.v);
+    if(i>=0)h.causes.splice(i,1);
+    else if(d.v==='ns|je ne sais pas')h.causes=[d.v];
+    else if(h.causes.length<2){h.causes=h.causes.filter(x=>x!=='ns|je ne sais pas');h.causes.push(d.v);}}
+  else if(act==='addchain'){a.chains[d.fl].push(newChain());}
+  else if(act==='delchain'){a.chains[d.fl].splice(+d.ci,1);if(!a.chains[d.fl].length)a.chains[d.fl].push(newChain());}
+  else return false;
+  return true;
+}
+const FORM_ACTS=new Set(['set','tog','stp','addstep','delstep','hop','cz','addchain','delchain']);
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]'); if(!el||el.tagName==='INPUT')return;
+  if(V==='form'&&FORM_ACTS.has(el.dataset.act)){formAct(el);renderForm();queueSave();return;}
+  handle(el.dataset.act,el.dataset,el);
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(V==='form'){
+    if(el.dataset.act==='none'){A.none[el.dataset.fl]=el.checked;renderForm();queueSave();return;}
+    if(el.dataset.f&&el.tagName==='SELECT'){setPath(A,el.dataset.f,el.value);renderForm();queueSave();return;}
+  }
+  if(V==='setup'&&el.dataset.sk==='mgr'){SETUP.postes[+el.dataset.i].mgr=el.checked;}
+});
+document.addEventListener('input',e=>{
+  const el=e.target;
+  if(V==='form'&&el.dataset.f&&(el.tagName==='TEXTAREA'||el.type==='text')){setPath(A,el.dataset.f,el.value);queueSave();return;}
+  if(V==='setup'&&el.dataset.sk){
+    if(el.dataset.sk==='nom')SETUP.nom=el.value;
+    else if(el.dataset.sk==='themes')SETUP.themes=el.value;
+    else if(el.dataset.sk!=='mgr')SETUP.postes[+el.dataset.i][el.dataset.sk]=el.value;
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.target.tagName==='TEXTAREA')return;
+  const m={code:'enter',nom:'dcreate',pin:'resume',pin2:'begin'}[e.target.id];
+  if(m){e.preventDefault();handle(m,{},null);}
+});
+
+/* =============================================================== démarrage */
+(async()=>{
+  try{
+    if(BOOT.m==='dir'&&BOOT.k){await loadAdmin(BOOT.c||'',BOOT.k);return;}
+    if(BOOT.m==='dir'){V='dirhome';render();return;}
+    if(BOOT.c){try{await loadCompany(BOOT.c);V='pick';render();return;}catch(e){MSG=errText(e);}}
+    V='home';render();
+  }catch(e){MSG=errText(e);V=BOOT.m==='dir'?'dirhome':'home';render();}
+})();
+</script>
+</body>
+</html>
