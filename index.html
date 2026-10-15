@@ -188,7 +188,15 @@ const ERR={
 const errText=e=>ERR[e]||ERR.erreur_serveur;
 let BUSY=0;
 function busy(d){BUSY+=d;document.body.classList.toggle('busy',BUSY>0);}
-function call(action,p){busy(1);return callRaw(action,p).finally(()=>busy(-1));}
+// Apps Script « se réveille » parfois lentement : on réessaie en silence (jusqu'à 2 fois) les appels qu'on peut rejouer sans risque.
+// Création d'entreprise, prise de poste et ajout d'un poste manquant ne sont jamais rejoués (risque de doublon).
+const RETRY_OK=new Set(['getCompany','adminStatus','resume','resumeToken','save','saveSetup','launch']);
+const pause=ms=>new Promise(r=>setTimeout(r,ms));
+async function attempt(action,p,n){
+  try{return await callRaw(action,p);}
+  catch(e){if(n<2&&RETRY_OK.has(action)&&(e==='reseau'||e==='erreur_serveur')){await pause(n?2500:1000);return attempt(action,p,n+1);}throw e;}
+}
+function call(action,p){busy(1);return attempt(action,p,0).finally(()=>busy(-1));}
 function callRaw(action,p){return new Promise((res,rej)=>{
   if(!(window.google&&google.script&&google.script.run)){
     // page hébergée hors d'Apps Script : appel de l'API par fetch (sans cookies, donc sans souci de comptes Google multiples)
