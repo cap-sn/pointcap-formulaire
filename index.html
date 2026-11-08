@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Steven Nawe">
+<meta name="copyright" content="© 2026 Steven Nawe - PointCap™. Tous droits réservés.">
+<title>Questionnaire PointCap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#F4F1EA;--ink:#1E2B37;--muted:#5B666F;--green:#3B5B4C}@media(prefers-color-scheme:dark){:root{--bg:#17222C;--ink:#F4F1EA;--muted:#AEB6BC;--green:#8FB3A0}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}.b{font-family:Montserrat,Inter,system-ui,sans-serif;font-weight:600;font-size:22px;color:var(--green);margin-bottom:14px}#m{max-width:460px;color:var(--ink)}.c{margin-top:34px;font-size:12px;color:var(--muted)}</style>
+</head>
+<body>
+<div class="b">PointCap™</div>
+<p id="m"></p>
+<p class="c">© 2026 PointCap™. Tous droits réservés.</p>
+<script>/*! © 2026 Steven Nawe - PointCap™. Tous droits réservés. Code, questions, textes, structure et graphisme protégés (droit d'auteur). Toute extraction, reproduction ou réutilisation sans autorisation écrite est interdite. */
+!function(){var e=new URLSearchParams(location.search),n=function(n,t){return(e.get(n)||"").replace(/[^A-Za-z0-9\-]/g,"").slice(0,t)},t=n("c",12).toUpperCase(),a=n("k",40),c=document.getElementById("m"),i={code_inconnu:"Ce lien n’est pas valide. Vérifiez le lien reçu ou contactez votre accompagnateur.",cle_invalide:"Ce lien n’est pas valide. Vérifiez le lien reçu ou contactez votre accompagnateur.",lien_invalide:"Ouvrez le lien qui vous a été transmis par votre accompagnateur pour accéder au questionnaire.",acces_termine:"Cet accès est terminé. Contactez votre accompagnateur."};function o(e){c.textContent=e}t||a?(o("Ouverture du questionnaire…"),fetch("https://script.google.com/macros/s/AKfycbykbEwd_PTqT7UlJ1dFKec2ZV-jgvM_V84DyafKAM4bPvT7g6qhj5xvR8c4eWSBwwBp/exec",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"app",p:{c:t,k:a}}),credentials:"omit",redirect:"follow"}).then(function(e){return e.json()}).then(function(e){if(e&&e.ok&&e.d&&e.d.html)return document.open(),document.write(e.d.html),void document.close();o(i[e&&e.e]||"Ouverture impossible. Réessayez dans un instant.")}).catch(function(){o("Connexion impossible. Réessayez dans un instant.")})):o(i.lien_invalide)}();</script>
+</body>
+</html>
